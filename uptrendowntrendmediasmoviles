@@ -1,0 +1,31 @@
+//@version=5
+indicator("Up Trend y Down Trend", overlay=true)
+
+// Parámetros
+fast_length = input(10, "Longitud media móvil rápida")
+slow_length = input(20, "Longitud media móvil lenta")
+
+// Medias móviles
+fast_ma = ta.sma(close, fast_length)
+slow_ma = ta.sma(close, slow_length)
+
+// Determinar las condiciones de la tendencia alcista
+up_trend = ta.crossover(fast_ma, slow_ma)
+
+// Determinar las condiciones de la tendencia bajista
+down_trend = ta.crossunder(fast_ma, slow_ma)
+
+// Plot de las condiciones de tendencia
+plotshape(up_trend, color=color.green, title="Up Trend", location=location.belowbar, style=shape.labelup, text="Up Trend")
+plotshape(down_trend, color=color.red, title="Down Trend", location=location.abovebar, style=shape.labeldown, text="Down Trend")
+
+// Estilo visual de las medias móviles
+plot(fast_ma, color=color.blue, title="MA Rápida")
+plot(slow_ma, color=color.red, title="MA Lenta")
+
+////////////////
+// Alerta para la tendencia alcista
+alertcondition(up_trend, title="Tendencia Alcista", message="Tendencia alcista detectada!")
+
+// Alerta para la tendencia bajista
+alertcondition(down_trend, title="Tendencia Bajista", message="Tendencia bajista detectada!")
